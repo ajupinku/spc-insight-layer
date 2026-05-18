@@ -20,7 +20,7 @@ const steps = [
   { icon: Wrench, title: "Engineering action outside tool", desc: "SNTTW Connect informs; corrective actions remain in MES / engineering systems." },
 ];
 
-export default function _() {}
+
 
 function Help() {
   return (
