@@ -89,8 +89,8 @@ function ProcessMatrix() {
                   const owner = getOwner(p.ownerId);
                   const isOpen = expanded === p.id;
                   return (
-                    <>
-                      <tr key={p.id} className="border-t border-border hover:bg-muted/30">
+                    <Fragment key={p.id}>
+                      <tr className="border-t border-border hover:bg-muted/30">
                         <td className="px-2 py-2">
                           <button onClick={() => setExpanded(isOpen ? null : p.id)} className="rounded p-1 hover:bg-muted">
                             <ChevronRight className={`h-4 w-4 transition-transform ${isOpen ? "rotate-90" : ""}`} />
