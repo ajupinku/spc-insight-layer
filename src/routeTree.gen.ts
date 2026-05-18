@@ -9,10 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ViolationsRouteImport } from './routes/violations'
 import { Route as SpcRouteImport } from './routes/spc'
 import { Route as ProcessesRouteImport } from './routes/processes'
+import { Route as OwnersRouteImport } from './routes/owners'
+import { Route as MesRouteImport } from './routes/mes'
+import { Route as LotHistoryRouteImport } from './routes/lot-history'
+import { Route as HelpRouteImport } from './routes/help'
+import { Route as AuditRouteImport } from './routes/audit'
+import { Route as AlertsRouteImport } from './routes/alerts'
 import { Route as IndexRouteImport } from './routes/index'
 
+const ViolationsRoute = ViolationsRouteImport.update({
+  id: '/violations',
+  path: '/violations',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SpcRoute = SpcRouteImport.update({
   id: '/spc',
   path: '/spc',
@@ -23,6 +35,36 @@ const ProcessesRoute = ProcessesRouteImport.update({
   path: '/processes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OwnersRoute = OwnersRouteImport.update({
+  id: '/owners',
+  path: '/owners',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MesRoute = MesRouteImport.update({
+  id: '/mes',
+  path: '/mes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LotHistoryRoute = LotHistoryRouteImport.update({
+  id: '/lot-history',
+  path: '/lot-history',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HelpRoute = HelpRouteImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuditRoute = AuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AlertsRoute = AlertsRouteImport.update({
+  id: '/alerts',
+  path: '/alerts',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,36 +73,102 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/alerts': typeof AlertsRoute
+  '/audit': typeof AuditRoute
+  '/help': typeof HelpRoute
+  '/lot-history': typeof LotHistoryRoute
+  '/mes': typeof MesRoute
+  '/owners': typeof OwnersRoute
   '/processes': typeof ProcessesRoute
   '/spc': typeof SpcRoute
+  '/violations': typeof ViolationsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/alerts': typeof AlertsRoute
+  '/audit': typeof AuditRoute
+  '/help': typeof HelpRoute
+  '/lot-history': typeof LotHistoryRoute
+  '/mes': typeof MesRoute
+  '/owners': typeof OwnersRoute
   '/processes': typeof ProcessesRoute
   '/spc': typeof SpcRoute
+  '/violations': typeof ViolationsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/alerts': typeof AlertsRoute
+  '/audit': typeof AuditRoute
+  '/help': typeof HelpRoute
+  '/lot-history': typeof LotHistoryRoute
+  '/mes': typeof MesRoute
+  '/owners': typeof OwnersRoute
   '/processes': typeof ProcessesRoute
   '/spc': typeof SpcRoute
+  '/violations': typeof ViolationsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/processes' | '/spc'
+  fullPaths:
+    | '/'
+    | '/alerts'
+    | '/audit'
+    | '/help'
+    | '/lot-history'
+    | '/mes'
+    | '/owners'
+    | '/processes'
+    | '/spc'
+    | '/violations'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/processes' | '/spc'
-  id: '__root__' | '/' | '/processes' | '/spc'
+  to:
+    | '/'
+    | '/alerts'
+    | '/audit'
+    | '/help'
+    | '/lot-history'
+    | '/mes'
+    | '/owners'
+    | '/processes'
+    | '/spc'
+    | '/violations'
+  id:
+    | '__root__'
+    | '/'
+    | '/alerts'
+    | '/audit'
+    | '/help'
+    | '/lot-history'
+    | '/mes'
+    | '/owners'
+    | '/processes'
+    | '/spc'
+    | '/violations'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AlertsRoute: typeof AlertsRoute
+  AuditRoute: typeof AuditRoute
+  HelpRoute: typeof HelpRoute
+  LotHistoryRoute: typeof LotHistoryRoute
+  MesRoute: typeof MesRoute
+  OwnersRoute: typeof OwnersRoute
   ProcessesRoute: typeof ProcessesRoute
   SpcRoute: typeof SpcRoute
+  ViolationsRoute: typeof ViolationsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/violations': {
+      id: '/violations'
+      path: '/violations'
+      fullPath: '/violations'
+      preLoaderRoute: typeof ViolationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/spc': {
       id: '/spc'
       path: '/spc'
@@ -75,6 +183,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProcessesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/owners': {
+      id: '/owners'
+      path: '/owners'
+      fullPath: '/owners'
+      preLoaderRoute: typeof OwnersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mes': {
+      id: '/mes'
+      path: '/mes'
+      fullPath: '/mes'
+      preLoaderRoute: typeof MesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lot-history': {
+      id: '/lot-history'
+      path: '/lot-history'
+      fullPath: '/lot-history'
+      preLoaderRoute: typeof LotHistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/help': {
+      id: '/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof HelpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/audit': {
+      id: '/audit'
+      path: '/audit'
+      fullPath: '/audit'
+      preLoaderRoute: typeof AuditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/alerts': {
+      id: '/alerts'
+      path: '/alerts'
+      fullPath: '/alerts'
+      preLoaderRoute: typeof AlertsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -87,8 +237,15 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AlertsRoute: AlertsRoute,
+  AuditRoute: AuditRoute,
+  HelpRoute: HelpRoute,
+  LotHistoryRoute: LotHistoryRoute,
+  MesRoute: MesRoute,
+  OwnersRoute: OwnersRoute,
   ProcessesRoute: ProcessesRoute,
   SpcRoute: SpcRoute,
+  ViolationsRoute: ViolationsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
