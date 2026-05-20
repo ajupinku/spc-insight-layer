@@ -9,20 +9,40 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as YieldRouteImport } from './routes/yield'
 import { Route as ViolationsRouteImport } from './routes/violations'
+import { Route as VersionsRouteImport } from './routes/versions'
 import { Route as SpcRouteImport } from './routes/spc'
+import { Route as ProductsRouteImport } from './routes/products'
 import { Route as ProcessesRouteImport } from './routes/processes'
 import { Route as OwnersRouteImport } from './routes/owners'
+import { Route as LotsRouteImport } from './routes/lots'
+import { Route as DatabaseRouteImport } from './routes/database'
 import { Route as IndexRouteImport } from './routes/index'
 
+const YieldRoute = YieldRouteImport.update({
+  id: '/yield',
+  path: '/yield',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ViolationsRoute = ViolationsRouteImport.update({
   id: '/violations',
   path: '/violations',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VersionsRoute = VersionsRouteImport.update({
+  id: '/versions',
+  path: '/versions',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SpcRoute = SpcRouteImport.update({
   id: '/spc',
   path: '/spc',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProcessesRoute = ProcessesRouteImport.update({
@@ -35,6 +55,16 @@ const OwnersRoute = OwnersRouteImport.update({
   path: '/owners',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LotsRoute = LotsRouteImport.update({
+  id: '/lots',
+  path: '/lots',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DatabaseRoute = DatabaseRouteImport.update({
+  id: '/database',
+  path: '/database',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -43,44 +73,102 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/database': typeof DatabaseRoute
+  '/lots': typeof LotsRoute
   '/owners': typeof OwnersRoute
   '/processes': typeof ProcessesRoute
+  '/products': typeof ProductsRoute
   '/spc': typeof SpcRoute
+  '/versions': typeof VersionsRoute
   '/violations': typeof ViolationsRoute
+  '/yield': typeof YieldRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/database': typeof DatabaseRoute
+  '/lots': typeof LotsRoute
   '/owners': typeof OwnersRoute
   '/processes': typeof ProcessesRoute
+  '/products': typeof ProductsRoute
   '/spc': typeof SpcRoute
+  '/versions': typeof VersionsRoute
   '/violations': typeof ViolationsRoute
+  '/yield': typeof YieldRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/database': typeof DatabaseRoute
+  '/lots': typeof LotsRoute
   '/owners': typeof OwnersRoute
   '/processes': typeof ProcessesRoute
+  '/products': typeof ProductsRoute
   '/spc': typeof SpcRoute
+  '/versions': typeof VersionsRoute
   '/violations': typeof ViolationsRoute
+  '/yield': typeof YieldRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/owners' | '/processes' | '/spc' | '/violations'
+  fullPaths:
+    | '/'
+    | '/database'
+    | '/lots'
+    | '/owners'
+    | '/processes'
+    | '/products'
+    | '/spc'
+    | '/versions'
+    | '/violations'
+    | '/yield'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/owners' | '/processes' | '/spc' | '/violations'
-  id: '__root__' | '/' | '/owners' | '/processes' | '/spc' | '/violations'
+  to:
+    | '/'
+    | '/database'
+    | '/lots'
+    | '/owners'
+    | '/processes'
+    | '/products'
+    | '/spc'
+    | '/versions'
+    | '/violations'
+    | '/yield'
+  id:
+    | '__root__'
+    | '/'
+    | '/database'
+    | '/lots'
+    | '/owners'
+    | '/processes'
+    | '/products'
+    | '/spc'
+    | '/versions'
+    | '/violations'
+    | '/yield'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DatabaseRoute: typeof DatabaseRoute
+  LotsRoute: typeof LotsRoute
   OwnersRoute: typeof OwnersRoute
   ProcessesRoute: typeof ProcessesRoute
+  ProductsRoute: typeof ProductsRoute
   SpcRoute: typeof SpcRoute
+  VersionsRoute: typeof VersionsRoute
   ViolationsRoute: typeof ViolationsRoute
+  YieldRoute: typeof YieldRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/yield': {
+      id: '/yield'
+      path: '/yield'
+      fullPath: '/yield'
+      preLoaderRoute: typeof YieldRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/violations': {
       id: '/violations'
       path: '/violations'
@@ -88,11 +176,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ViolationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/versions': {
+      id: '/versions'
+      path: '/versions'
+      fullPath: '/versions'
+      preLoaderRoute: typeof VersionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/spc': {
       id: '/spc'
       path: '/spc'
       fullPath: '/spc'
       preLoaderRoute: typeof SpcRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/processes': {
@@ -109,6 +211,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OwnersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lots': {
+      id: '/lots'
+      path: '/lots'
+      fullPath: '/lots'
+      preLoaderRoute: typeof LotsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/database': {
+      id: '/database'
+      path: '/database'
+      fullPath: '/database'
+      preLoaderRoute: typeof DatabaseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -121,10 +237,15 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DatabaseRoute: DatabaseRoute,
+  LotsRoute: LotsRoute,
   OwnersRoute: OwnersRoute,
   ProcessesRoute: ProcessesRoute,
+  ProductsRoute: ProductsRoute,
   SpcRoute: SpcRoute,
+  VersionsRoute: VersionsRoute,
   ViolationsRoute: ViolationsRoute,
+  YieldRoute: YieldRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
