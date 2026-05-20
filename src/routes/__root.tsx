@@ -41,8 +41,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "SNTTW Connect — SPC Plug-in for MES" },
-      { name: "description", content: "Read-only SPC intelligence layer for MES. Monitor processes, parameters, lots, and spec violations across the fab." },
+      { title: "AKSPC — SPC + Yield Intelligence for Power Semiconductor MES" },
+      { name: "description", content: "Read-only SPC and final-test yield intelligence layer for power semiconductor MES. Track products, lots, wafers, process flow, and spec violations." },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
