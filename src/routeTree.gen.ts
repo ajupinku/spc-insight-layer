@@ -9,25 +9,40 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as YieldRouteImport } from './routes/yield'
 import { Route as ViolationsRouteImport } from './routes/violations'
+import { Route as VersionsRouteImport } from './routes/versions'
 import { Route as SpcRouteImport } from './routes/spc'
+import { Route as ProductsRouteImport } from './routes/products'
 import { Route as ProcessesRouteImport } from './routes/processes'
 import { Route as OwnersRouteImport } from './routes/owners'
-import { Route as MesRouteImport } from './routes/mes'
-import { Route as LotHistoryRouteImport } from './routes/lot-history'
-import { Route as HelpRouteImport } from './routes/help'
-import { Route as AuditRouteImport } from './routes/audit'
-import { Route as AlertsRouteImport } from './routes/alerts'
+import { Route as LotsRouteImport } from './routes/lots'
+import { Route as DatabaseRouteImport } from './routes/database'
 import { Route as IndexRouteImport } from './routes/index'
 
+const YieldRoute = YieldRouteImport.update({
+  id: '/yield',
+  path: '/yield',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ViolationsRoute = ViolationsRouteImport.update({
   id: '/violations',
   path: '/violations',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VersionsRoute = VersionsRouteImport.update({
+  id: '/versions',
+  path: '/versions',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SpcRoute = SpcRouteImport.update({
   id: '/spc',
   path: '/spc',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProcessesRoute = ProcessesRouteImport.update({
@@ -40,29 +55,14 @@ const OwnersRoute = OwnersRouteImport.update({
   path: '/owners',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MesRoute = MesRouteImport.update({
-  id: '/mes',
-  path: '/mes',
+const LotsRoute = LotsRouteImport.update({
+  id: '/lots',
+  path: '/lots',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LotHistoryRoute = LotHistoryRouteImport.update({
-  id: '/lot-history',
-  path: '/lot-history',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HelpRoute = HelpRouteImport.update({
-  id: '/help',
-  path: '/help',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuditRoute = AuditRouteImport.update({
-  id: '/audit',
-  path: '/audit',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AlertsRoute = AlertsRouteImport.update({
-  id: '/alerts',
-  path: '/alerts',
+const DatabaseRoute = DatabaseRouteImport.update({
+  id: '/database',
+  path: '/database',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -73,95 +73,102 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/alerts': typeof AlertsRoute
-  '/audit': typeof AuditRoute
-  '/help': typeof HelpRoute
-  '/lot-history': typeof LotHistoryRoute
-  '/mes': typeof MesRoute
+  '/database': typeof DatabaseRoute
+  '/lots': typeof LotsRoute
   '/owners': typeof OwnersRoute
   '/processes': typeof ProcessesRoute
+  '/products': typeof ProductsRoute
   '/spc': typeof SpcRoute
+  '/versions': typeof VersionsRoute
   '/violations': typeof ViolationsRoute
+  '/yield': typeof YieldRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/alerts': typeof AlertsRoute
-  '/audit': typeof AuditRoute
-  '/help': typeof HelpRoute
-  '/lot-history': typeof LotHistoryRoute
-  '/mes': typeof MesRoute
+  '/database': typeof DatabaseRoute
+  '/lots': typeof LotsRoute
   '/owners': typeof OwnersRoute
   '/processes': typeof ProcessesRoute
+  '/products': typeof ProductsRoute
   '/spc': typeof SpcRoute
+  '/versions': typeof VersionsRoute
   '/violations': typeof ViolationsRoute
+  '/yield': typeof YieldRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/alerts': typeof AlertsRoute
-  '/audit': typeof AuditRoute
-  '/help': typeof HelpRoute
-  '/lot-history': typeof LotHistoryRoute
-  '/mes': typeof MesRoute
+  '/database': typeof DatabaseRoute
+  '/lots': typeof LotsRoute
   '/owners': typeof OwnersRoute
   '/processes': typeof ProcessesRoute
+  '/products': typeof ProductsRoute
   '/spc': typeof SpcRoute
+  '/versions': typeof VersionsRoute
   '/violations': typeof ViolationsRoute
+  '/yield': typeof YieldRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/alerts'
-    | '/audit'
-    | '/help'
-    | '/lot-history'
-    | '/mes'
+    | '/database'
+    | '/lots'
     | '/owners'
     | '/processes'
+    | '/products'
     | '/spc'
+    | '/versions'
     | '/violations'
+    | '/yield'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/alerts'
-    | '/audit'
-    | '/help'
-    | '/lot-history'
-    | '/mes'
+    | '/database'
+    | '/lots'
     | '/owners'
     | '/processes'
+    | '/products'
     | '/spc'
+    | '/versions'
     | '/violations'
+    | '/yield'
   id:
     | '__root__'
     | '/'
-    | '/alerts'
-    | '/audit'
-    | '/help'
-    | '/lot-history'
-    | '/mes'
+    | '/database'
+    | '/lots'
     | '/owners'
     | '/processes'
+    | '/products'
     | '/spc'
+    | '/versions'
     | '/violations'
+    | '/yield'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AlertsRoute: typeof AlertsRoute
-  AuditRoute: typeof AuditRoute
-  HelpRoute: typeof HelpRoute
-  LotHistoryRoute: typeof LotHistoryRoute
-  MesRoute: typeof MesRoute
+  DatabaseRoute: typeof DatabaseRoute
+  LotsRoute: typeof LotsRoute
   OwnersRoute: typeof OwnersRoute
   ProcessesRoute: typeof ProcessesRoute
+  ProductsRoute: typeof ProductsRoute
   SpcRoute: typeof SpcRoute
+  VersionsRoute: typeof VersionsRoute
   ViolationsRoute: typeof ViolationsRoute
+  YieldRoute: typeof YieldRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/yield': {
+      id: '/yield'
+      path: '/yield'
+      fullPath: '/yield'
+      preLoaderRoute: typeof YieldRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/violations': {
       id: '/violations'
       path: '/violations'
@@ -169,11 +176,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ViolationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/versions': {
+      id: '/versions'
+      path: '/versions'
+      fullPath: '/versions'
+      preLoaderRoute: typeof VersionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/spc': {
       id: '/spc'
       path: '/spc'
       fullPath: '/spc'
       preLoaderRoute: typeof SpcRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/processes': {
@@ -190,39 +211,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OwnersRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/mes': {
-      id: '/mes'
-      path: '/mes'
-      fullPath: '/mes'
-      preLoaderRoute: typeof MesRouteImport
+    '/lots': {
+      id: '/lots'
+      path: '/lots'
+      fullPath: '/lots'
+      preLoaderRoute: typeof LotsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/lot-history': {
-      id: '/lot-history'
-      path: '/lot-history'
-      fullPath: '/lot-history'
-      preLoaderRoute: typeof LotHistoryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/help': {
-      id: '/help'
-      path: '/help'
-      fullPath: '/help'
-      preLoaderRoute: typeof HelpRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/audit': {
-      id: '/audit'
-      path: '/audit'
-      fullPath: '/audit'
-      preLoaderRoute: typeof AuditRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/alerts': {
-      id: '/alerts'
-      path: '/alerts'
-      fullPath: '/alerts'
-      preLoaderRoute: typeof AlertsRouteImport
+    '/database': {
+      id: '/database'
+      path: '/database'
+      fullPath: '/database'
+      preLoaderRoute: typeof DatabaseRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -237,15 +237,15 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AlertsRoute: AlertsRoute,
-  AuditRoute: AuditRoute,
-  HelpRoute: HelpRoute,
-  LotHistoryRoute: LotHistoryRoute,
-  MesRoute: MesRoute,
+  DatabaseRoute: DatabaseRoute,
+  LotsRoute: LotsRoute,
   OwnersRoute: OwnersRoute,
   ProcessesRoute: ProcessesRoute,
+  ProductsRoute: ProductsRoute,
   SpcRoute: SpcRoute,
+  VersionsRoute: VersionsRoute,
   ViolationsRoute: ViolationsRoute,
+  YieldRoute: YieldRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

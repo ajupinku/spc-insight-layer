@@ -1,61 +1,63 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import { Mail, ShieldAlert, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/page-header";
-import { processes, owners as initialOwners, getOwner } from "@/lib/mock-data";
-import { UserPlus, AlertTriangle } from "lucide-react";
+import { owners as initialOwners, processSteps, visibleProcessSteps } from "@/lib/mock-data";
 
 export const Route = createFileRoute("/owners")({
-  head: () => ({ meta: [{ title: "Process Owner Management — SNTTW Connect" }] }),
-  component: OwnerMgmt,
+  head: () => ({ meta: [{ title: "Process Owner Matrix — AKSPC" }] }),
+  component: OwnerMatrix,
 });
 
-function OwnerMgmt() {
-  const [owners, setOwners] = useState(initialOwners);
-  const [assignments, setAssignments] = useState(() => Object.fromEntries(processes.map(p => [p.id, p.ownerId])) as Record<string, string>);
+function OwnerMatrix() {
+  const [showAll, setShowAll] = useState(false);
+  const list = showAll ? processSteps : visibleProcessSteps;
 
-  function update(id: string, patch: Partial<typeof owners[number]>) {
-    setOwners(prev => prev.map(o => o.id === id ? { ...o, ...patch } : o));
-  }
-
-  const orphans = useMemo(() => processes.filter(p => !assignments[p.id]).length, [assignments]);
+  const ownerOptions = initialOwners;
+  const unassigned = list.filter(p => p.ownerId === "OWN-07").length;
 
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Process Owner Management"
-        subtitle="Every active process must have an owner. Owners receive USL/LSL email alerts."
-        actions={<Badge variant="outline" className={orphans ? "border-destructive/40 bg-destructive/10 text-destructive" : "border-success/40 bg-success/10 text-success"}>
-          {orphans ? <><AlertTriangle className="mr-1 h-3 w-3" /> {orphans} processes missing owner</> : "All processes have owners"}
-        </Badge>}
+        title="Process Owner Matrix"
+        subtitle="Every process must have an owner. Missing owners block email alerts and surface in the matrix."
       />
+
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+        <Stat icon={Users}       label="Active Owners"   value={ownerOptions.filter(o => o.active).length} />
+        <Stat icon={ShieldAlert} label="Unassigned Steps" value={unassigned} tone={unassigned ? "warn" : "ok"} />
+        <Stat icon={Mail}        label="With Backup"     value={ownerOptions.filter(o => o.backupName).length} />
+        <Stat icon={Users}       label="Total Owners"    value={ownerOptions.length} />
+      </div>
 
       <Card>
         <CardContent className="p-4">
           <div className="mb-3 flex items-center justify-between">
-            <div className="text-sm font-semibold">Owners ({owners.length})</div>
-            <Button size="sm" variant="outline" className="gap-1"><UserPlus className="h-3 w-3" /> Add owner</Button>
+            <h3 className="text-sm font-semibold">Owners</h3>
           </div>
           <div className="overflow-auto rounded-md border border-border">
-            <table className="w-full text-sm">
-              <thead className="bg-muted/40 text-[11px] uppercase tracking-wider text-muted-foreground">
-                <tr>
-                  {["ID","Name","Email","Department","Backup Name","Backup Email","Active"].map(h => <th key={h} className="px-3 py-2 text-left">{h}</th>)}
-                </tr>
+            <table className="w-full text-xs">
+              <thead className="bg-muted/40 text-[10px] uppercase tracking-wider text-muted-foreground">
+                <tr>{["ID","Name","Email","Department","Backup","Backup Email","Escalation","Status"].map(h =>
+                  <th key={h} className="px-2 py-1.5 text-left">{h}</th>)}</tr>
               </thead>
               <tbody>
-                {owners.map(o => (
-                  <tr key={o.id} className="border-t border-border">
-                    <td className="px-3 py-2 font-mono text-xs">{o.id}</td>
-                    <td className="px-3 py-2"><Input value={o.name} onChange={(e) => update(o.id, { name: e.target.value })} className="h-8" /></td>
-                    <td className="px-3 py-2"><Input type="email" value={o.email} onChange={(e) => update(o.id, { email: e.target.value })} className="h-8" /></td>
-                    <td className="px-3 py-2"><Input value={o.department} onChange={(e) => update(o.id, { department: e.target.value })} className="h-8" /></td>
-                    <td className="px-3 py-2"><Input value={o.backupName} onChange={(e) => update(o.id, { backupName: e.target.value })} className="h-8" /></td>
-                    <td className="px-3 py-2"><Input type="email" value={o.backupEmail} onChange={(e) => update(o.id, { backupEmail: e.target.value })} className="h-8" /></td>
-                    <td className="px-3 py-2"><input type="checkbox" checked={o.active} onChange={(e) => update(o.id, { active: e.target.checked })} /></td>
+                {ownerOptions.map(o => (
+                  <tr key={o.id} className="border-t border-border hover:bg-muted/30">
+                    <td className="px-2 py-1.5 font-mono">{o.id}</td>
+                    <td className="px-2 py-1.5 font-medium">{o.name}</td>
+                    <td className="px-2 py-1.5 text-muted-foreground">{o.email || "—"}</td>
+                    <td className="px-2 py-1.5">{o.department}</td>
+                    <td className="px-2 py-1.5">{o.backupName || "—"}</td>
+                    <td className="px-2 py-1.5 text-muted-foreground">{o.backupEmail || "—"}</td>
+                    <td className="px-2 py-1.5 font-mono">{o.escalationHours}h</td>
+                    <td className="px-2 py-1.5">
+                      <Badge variant="outline" className={o.active ? "border-success/40 bg-success/10 text-success" : "border-warning/40 bg-warning/10 text-warning"}>
+                        {o.active ? "Active" : "Inactive"}
+                      </Badge>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -66,33 +68,33 @@ function OwnerMgmt() {
 
       <Card>
         <CardContent className="p-4">
-          <div className="mb-3 text-sm font-semibold">Process → Owner Assignment</div>
-          <div className="overflow-auto rounded-md border border-border">
-            <table className="w-full text-sm">
-              <thead className="bg-muted/40 text-[11px] uppercase tracking-wider text-muted-foreground">
-                <tr>
-                  {["Process ID","Process Name","Area","Owner","Email","Status"].map(h => <th key={h} className="px-3 py-2 text-left">{h}</th>)}
-                </tr>
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="text-sm font-semibold">Process → Owner Assignment</h3>
+            <button onClick={() => setShowAll(s => !s)} className="text-xs font-medium text-primary hover:underline">
+              {showAll ? "Visible flow only" : `Show all ${processSteps.length} steps`}
+            </button>
+          </div>
+          <div className="overflow-auto rounded-md border border-border max-h-[60vh]">
+            <table className="w-full text-xs">
+              <thead className="sticky top-0 bg-muted/60 text-[10px] uppercase tracking-wider text-muted-foreground backdrop-blur">
+                <tr>{["#","Process","Area","Tool","Owner","Email Alerts"].map(h =>
+                  <th key={h} className="px-2 py-1.5 text-left">{h}</th>)}</tr>
               </thead>
               <tbody>
-                {processes.map(p => {
-                  const owner = getOwner(assignments[p.id]);
+                {list.map(p => {
+                  const o = ownerOptions.find(x => x.id === p.ownerId);
+                  const ok = !!o && o.active && o.email;
                   return (
-                    <tr key={p.id} className="border-t border-border">
-                      <td className="px-3 py-2 font-mono text-xs">{p.id}</td>
-                      <td className="px-3 py-2">{p.name}</td>
-                      <td className="px-3 py-2">{p.area}</td>
-                      <td className="px-3 py-2">
-                        <select value={assignments[p.id] ?? ""} onChange={(e) => setAssignments(a => ({ ...a, [p.id]: e.target.value }))} className="h-8 rounded-md border border-input bg-background px-2 text-sm">
-                          <option value="">— unassigned —</option>
-                          {owners.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
-                        </select>
-                      </td>
-                      <td className="px-3 py-2 text-xs text-muted-foreground">{owner?.email ?? "—"}</td>
-                      <td className="px-3 py-2">
-                        {!owner ? <Badge variant="outline" className="border-destructive/40 bg-destructive/10 text-destructive">Owner missing</Badge>
-                         : !owner.active ? <Badge variant="outline" className="border-warning/40 bg-warning/10 text-warning">Inactive</Badge>
-                         : <Badge variant="outline" className="border-success/40 bg-success/10 text-success">OK</Badge>}
+                    <tr key={p.id} className="border-t border-border hover:bg-muted/30">
+                      <td className="px-2 py-1.5 font-mono text-muted-foreground">{p.order}</td>
+                      <td className="px-2 py-1.5"><div className="font-medium">{p.name}</div><div className="text-[10px] text-muted-foreground font-mono">{p.id} · {p.tableName}</div></td>
+                      <td className="px-2 py-1.5">{p.area}</td>
+                      <td className="px-2 py-1.5 font-mono text-[10px]">{p.toolGroup}</td>
+                      <td className="px-2 py-1.5">{o?.name ?? <span className="text-warning">Owner missing</span>}</td>
+                      <td className="px-2 py-1.5">
+                        <Badge variant="outline" className={ok ? "border-success/40 bg-success/10 text-success" : "border-warning/40 bg-warning/10 text-warning"}>
+                          {ok ? "Enabled" : "Disabled — fix owner"}
+                        </Badge>
                       </td>
                     </tr>
                   );
@@ -103,5 +105,18 @@ function OwnerMgmt() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+function Stat({ icon: Icon, label, value, tone = "default" }: { icon: any; label: string; value: string | number; tone?: "default" | "ok" | "warn" }) {
+  const cls = tone === "warn" ? "text-warning" : tone === "ok" ? "text-success" : "text-primary";
+  return (
+    <Card><CardContent className="p-4">
+      <div className="flex items-center justify-between">
+        <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{label}</div>
+        <Icon className={`h-4 w-4 ${cls}`} />
+      </div>
+      <div className={`mt-1 font-mono text-2xl font-semibold ${cls}`}>{value}</div>
+    </CardContent></Card>
   );
 }
