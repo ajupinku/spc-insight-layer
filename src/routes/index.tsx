@@ -204,8 +204,8 @@ function CommandCenter() {
     return lots.filter(l => l.id.toLowerCase().includes(q)).slice(0, 5);
   }, [lotQuery]);
 
-  function openLot(id: string) {
-    navigate({ to: "/lots", search: { lot: id } as any });
+  function openLot(_id: string) {
+    navigate({ to: "/lots" });
   }
 
   return (
