@@ -1,8 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   Activity, AlertOctagon, ArrowDownRight, ArrowRight, ArrowUpRight, Boxes,
-  ChevronRight, Database, FlaskConical, Gauge, Layers, Lock, RefreshCw, Search,
+  ChevronRight, Database, FileDown, FlaskConical, Gauge, Layers, Lock, RefreshCw, Search,
   ShieldAlert, Sparkles, TrendingDown, Workflow,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,6 +17,8 @@ import {
 import {
   AreaChart, Area, LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianGrid,
 } from "recharts";
+import { ExportMenu, useExportRef } from "@/components/export-menu";
+import { exportReportPdf } from "@/lib/export-utils";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [{ title: "AKSPC Command Center" }] }),
