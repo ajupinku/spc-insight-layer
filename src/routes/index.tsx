@@ -526,10 +526,18 @@ function CommandCenter() {
         </Card>
 
         {/* Panel C — FT yield trend */}
-        <Card className="lg:col-span-3">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-semibold">Final Test Yield Trend</CardTitle>
-            <p className="text-[11px] text-muted-foreground">last 30 lots</p>
+        <Card ref={trendRef as any} className="lg:col-span-3">
+          <CardHeader className="pb-2 flex-row items-start justify-between">
+            <div>
+              <CardTitle className="text-sm font-semibold">Final Test Yield Trend</CardTitle>
+              <p className="text-[11px] text-muted-foreground">last 30 lots</p>
+            </div>
+            <ExportMenu
+              targetRef={trendRef}
+              name="ft-yield-trend"
+              title="Final Test Yield Trend"
+              csvRows={yieldTrend}
+            />
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={210}>
