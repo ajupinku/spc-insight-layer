@@ -257,9 +257,12 @@ function CommandCenter() {
             <Badge variant="outline" className="gap-1 text-muted-foreground">
               <RefreshCw className="h-3 w-3" /> {new Date(mesStatus.lastSync).toLocaleString([], { month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit" })}
             </Badge>
+            <Button onClick={exportFullReport} size="sm" className="export-skip h-8 gap-1.5">
+              <FileDown className="h-3.5 w-3.5" /> Export Full Report
+            </Button>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-6">
+        <div ref={kpiRef} className="grid grid-cols-2 gap-2 rounded-lg bg-background p-1 md:grid-cols-3 lg:grid-cols-6">
           <Kpi icon={Layers}       label="Active Lots"          value={activeLots}                spark={lotSpark} />
           <Kpi icon={ShieldAlert}  label="Open USL/LSL"         value={openViolations}            spark={violSpark} tone="danger" hint="triggers owner email" />
           <Kpi icon={AlertOctagon} label="UCL/LCL Warnings"     value={spcWarnings}               spark={warnSpark} tone="warn"   hint="SPC only · no email" />
@@ -272,7 +275,7 @@ function CommandCenter() {
       {/* ============================================================
           SECTION 2 — Hero: Lot Search + Fab Health
           ============================================================ */}
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
+      <div ref={heroRef} className="grid grid-cols-1 gap-4 lg:grid-cols-12">
         {/* Lot search (5/12) */}
         <Card className="lg:col-span-5 border-primary/20 ring-1 ring-primary/10">
           <CardHeader className="pb-3">
