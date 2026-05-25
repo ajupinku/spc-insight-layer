@@ -1,8 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   Activity, AlertOctagon, ArrowDownRight, ArrowRight, ArrowUpRight, Boxes,
-  ChevronRight, Database, FlaskConical, Gauge, Layers, Lock, RefreshCw, Search,
+  ChevronRight, Database, FileDown, FlaskConical, Gauge, Layers, Lock, RefreshCw, Search,
   ShieldAlert, Sparkles, TrendingDown, Workflow,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,6 +17,8 @@ import {
 import {
   AreaChart, Area, LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianGrid,
 } from "recharts";
+import { ExportMenu, useExportRef } from "@/components/export-menu";
+import { exportReportPdf } from "@/lib/export-utils";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [{ title: "AKSPC Command Center" }] }),
@@ -208,6 +210,26 @@ function CommandCenter() {
     navigate({ to: "/lots" });
   }
 
+  // Export refs for each major panel
+  const kpiRef = useExportRef();
+  const heroRef = useExportRef();
+  const heatmapRef = useExportRef();
+  const matrixRef = useExportRef();
+  const trendRef = useExportRef();
+  const alertsRef = useExportRef();
+
+  function exportFullReport() {
+    const panels = [
+      { node: kpiRef.current!,     title: "Top KPIs" },
+      { node: heroRef.current!,    title: "Fab Health & Lot Search" },
+      { node: heatmapRef.current!, title: "Product Family · Yield Heatmap" },
+      { node: matrixRef.current!,  title: "Process Health Matrix" },
+      { node: trendRef.current!,   title: "Final Test Yield Trend" },
+      { node: alertsRef.current!,  title: "Alert Center" },
+    ].filter(p => p.node);
+    void exportReportPdf(panels, "akspc-command-center", "AKSPC Command Center Report");
+  }
+
   return (
     <div className="space-y-5">
       {/* ============================================================
@@ -235,9 +257,12 @@ function CommandCenter() {
             <Badge variant="outline" className="gap-1 text-muted-foreground">
               <RefreshCw className="h-3 w-3" /> {new Date(mesStatus.lastSync).toLocaleString([], { month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit" })}
             </Badge>
+            <Button onClick={exportFullReport} size="sm" className="export-skip h-8 gap-1.5">
+              <FileDown className="h-3.5 w-3.5" /> Export Full Report
+            </Button>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-6">
+        <div ref={kpiRef} className="grid grid-cols-2 gap-2 rounded-lg bg-background p-1 md:grid-cols-3 lg:grid-cols-6">
           <Kpi icon={Layers}       label="Active Lots"          value={activeLots}                spark={lotSpark} />
           <Kpi icon={ShieldAlert}  label="Open USL/LSL"         value={openViolations}            spark={violSpark} tone="danger" hint="triggers owner email" />
           <Kpi icon={AlertOctagon} label="UCL/LCL Warnings"     value={spcWarnings}               spark={warnSpark} tone="warn"   hint="SPC only · no email" />
@@ -250,7 +275,7 @@ function CommandCenter() {
       {/* ============================================================
           SECTION 2 — Hero: Lot Search + Fab Health
           ============================================================ */}
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
+      <div ref={heroRef} className="grid grid-cols-1 gap-4 lg:grid-cols-12">
         {/* Lot search (5/12) */}
         <Card className="lg:col-span-5 border-primary/20 ring-1 ring-primary/10">
           <CardHeader className="pb-3">
@@ -393,13 +418,23 @@ function CommandCenter() {
           ============================================================ */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
         {/* Panel A — Family yield heatmap */}
-        <Card className="lg:col-span-5">
+        <Card ref={heatmapRef as any} className="lg:col-span-5">
           <CardHeader className="pb-2 flex-row items-center justify-between">
             <div>
               <CardTitle className="text-sm font-semibold">Product Family · Yield Heatmap</CardTitle>
               <p className="text-[11px] text-muted-foreground">last 8 weeks · final test pass rate</p>
             </div>
-            <Link to="/yield" className="text-[11px] font-medium text-primary hover:underline">All families →</Link>
+            <div className="flex items-center gap-1">
+              <ExportMenu
+                targetRef={heatmapRef}
+                name="family-yield-heatmap"
+                title="Product Family · Yield Heatmap"
+                csvRows={familyHeatmap.flatMap(({ family, cells }) =>
+                  cells.map(c => ({ family: family.name, week: `W${c.week + 1}`, yield_pct: +(c.y * 100).toFixed(2), lots: c.lots, failed_dies: c.fails }))
+                )}
+              />
+              <Link to="/yield" className="export-skip text-[11px] font-medium text-primary hover:underline">All →</Link>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-1">
@@ -440,13 +475,23 @@ function CommandCenter() {
         </Card>
 
         {/* Panel B — Process × Family matrix */}
-        <Card className="lg:col-span-4">
+        <Card ref={matrixRef as any} className="lg:col-span-4">
           <CardHeader className="pb-2 flex-row items-center justify-between">
             <div>
               <CardTitle className="text-sm font-semibold">Process Health Matrix</CardTitle>
               <p className="text-[11px] text-muted-foreground">step × family · OK / Warn / Critical</p>
             </div>
-            <Link to="/processes" className="text-[11px] font-medium text-primary hover:underline">Open →</Link>
+            <div className="flex items-center gap-1">
+              <ExportMenu
+                targetRef={matrixRef}
+                name="process-health-matrix"
+                title="Process Health Matrix"
+                csvRows={matrix.flatMap(({ proc, row }) =>
+                  row.map(c => ({ process: proc.name, family: c.fam.name, violations: c.count, status: c.status }))
+                )}
+              />
+              <Link to="/processes" className="export-skip text-[11px] font-medium text-primary hover:underline">Open →</Link>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
@@ -481,10 +526,18 @@ function CommandCenter() {
         </Card>
 
         {/* Panel C — FT yield trend */}
-        <Card className="lg:col-span-3">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-semibold">Final Test Yield Trend</CardTitle>
-            <p className="text-[11px] text-muted-foreground">last 30 lots</p>
+        <Card ref={trendRef as any} className="lg:col-span-3">
+          <CardHeader className="pb-2 flex-row items-start justify-between">
+            <div>
+              <CardTitle className="text-sm font-semibold">Final Test Yield Trend</CardTitle>
+              <p className="text-[11px] text-muted-foreground">last 30 lots</p>
+            </div>
+            <ExportMenu
+              targetRef={trendRef}
+              name="ft-yield-trend"
+              title="Final Test Yield Trend"
+              csvRows={yieldTrend}
+            />
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={210}>
@@ -510,7 +563,7 @@ function CommandCenter() {
       {/* ============================================================
           SECTION 4 — Alert center
           ============================================================ */}
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
+      <div ref={alertsRef} className="grid grid-cols-1 gap-4 lg:grid-cols-12">
         <RankedList
           title="Top Failing Parameters"
           link={{ to: "/spc", label: "SPC →" }}

@@ -45,40 +45,42 @@
 }
 
 :root {
-  --radius: 0.5rem;
-  --background: oklch(0.99 0.003 150);
-  --foreground: oklch(0.18 0.02 160);
+  --radius: 0.625rem;
+  /* macOS-inspired light palette */
+  --background: oklch(0.985 0.002 250);
+  --foreground: oklch(0.22 0.02 260);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.02 160);
+  --card-foreground: oklch(0.22 0.02 260);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.02 160);
-  /* Dark green primary */
-  --primary: oklch(0.38 0.09 155);
-  --primary-foreground: oklch(0.99 0.003 150);
-  --secondary: oklch(0.96 0.01 155);
-  --secondary-foreground: oklch(0.25 0.04 160);
-  --muted: oklch(0.965 0.005 150);
-  --muted-foreground: oklch(0.48 0.02 160);
-  --accent: oklch(0.93 0.05 155);
-  --accent-foreground: oklch(0.28 0.06 160);
-  --destructive: oklch(0.55 0.22 25);
-  --destructive-foreground: oklch(0.99 0.003 150);
-  --success: oklch(0.55 0.14 150);
-  --success-foreground: oklch(0.99 0.003 150);
-  --warning: oklch(0.75 0.16 75);
-  --warning-foreground: oklch(0.2 0.04 80);
-  --border: oklch(0.91 0.01 155);
-  --input: oklch(0.91 0.01 155);
-  --ring: oklch(0.38 0.09 155);
+  --popover-foreground: oklch(0.22 0.02 260);
+  /* macOS system blue accent */
+  --primary: oklch(0.62 0.18 255);
+  --primary-foreground: oklch(0.99 0.003 250);
+  --secondary: oklch(0.965 0.008 250);
+  --secondary-foreground: oklch(0.28 0.03 260);
+  --muted: oklch(0.96 0.005 250);
+  --muted-foreground: oklch(0.52 0.02 260);
+  --accent: oklch(0.94 0.03 255);
+  --accent-foreground: oklch(0.3 0.08 260);
+  --destructive: oklch(0.62 0.22 25);
+  --destructive-foreground: oklch(0.99 0.003 250);
+  --success: oklch(0.66 0.16 150);
+  --success-foreground: oklch(0.99 0.003 250);
+  --warning: oklch(0.78 0.15 75);
+  --warning-foreground: oklch(0.22 0.04 80);
+  --border: oklch(0.92 0.005 250);
+  --input: oklch(0.93 0.005 250);
+  --ring: oklch(0.62 0.18 255);
 
-  --sidebar: oklch(0.22 0.04 160);
-  --sidebar-foreground: oklch(0.95 0.01 150);
-  --sidebar-primary: oklch(0.55 0.14 150);
-  --sidebar-primary-foreground: oklch(0.99 0.003 150);
-  --sidebar-accent: oklch(0.28 0.05 160);
-  --sidebar-accent-foreground: oklch(0.97 0.01 150);
-  --sidebar-border: oklch(0.3 0.04 160);
-  --sidebar-ring: oklch(0.55 0.14 150);
+  /* Light frosted sidebar — macOS Finder feel */
+  --sidebar: oklch(0.97 0.004 250);
+  --sidebar-foreground: oklch(0.28 0.02 260);
+  --sidebar-primary: oklch(0.62 0.18 255);
+  --sidebar-primary-foreground: oklch(0.99 0.003 250);
+  --sidebar-accent: oklch(0.93 0.015 255);
+  --sidebar-accent-foreground: oklch(0.3 0.08 260);
+  --sidebar-border: oklch(0.9 0.005 250);
+  --sidebar-ring: oklch(0.62 0.18 255);
 }
 
 @layer base {
