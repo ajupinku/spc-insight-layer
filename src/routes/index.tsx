@@ -210,6 +210,26 @@ function CommandCenter() {
     navigate({ to: "/lots" });
   }
 
+  // Export refs for each major panel
+  const kpiRef = useExportRef();
+  const heroRef = useExportRef();
+  const heatmapRef = useExportRef();
+  const matrixRef = useExportRef();
+  const trendRef = useExportRef();
+  const alertsRef = useExportRef();
+
+  function exportFullReport() {
+    const panels = [
+      { node: kpiRef.current!,     title: "Top KPIs" },
+      { node: heroRef.current!,    title: "Fab Health & Lot Search" },
+      { node: heatmapRef.current!, title: "Product Family · Yield Heatmap" },
+      { node: matrixRef.current!,  title: "Process Health Matrix" },
+      { node: trendRef.current!,   title: "Final Test Yield Trend" },
+      { node: alertsRef.current!,  title: "Alert Center" },
+    ].filter(p => p.node);
+    void exportReportPdf(panels, "akspc-command-center", "AKSPC Command Center Report");
+  }
+
   return (
     <div className="space-y-5">
       {/* ============================================================
