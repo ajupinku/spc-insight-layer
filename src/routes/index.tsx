@@ -475,13 +475,23 @@ function CommandCenter() {
         </Card>
 
         {/* Panel B — Process × Family matrix */}
-        <Card className="lg:col-span-4">
+        <Card ref={matrixRef as any} className="lg:col-span-4">
           <CardHeader className="pb-2 flex-row items-center justify-between">
             <div>
               <CardTitle className="text-sm font-semibold">Process Health Matrix</CardTitle>
               <p className="text-[11px] text-muted-foreground">step × family · OK / Warn / Critical</p>
             </div>
-            <Link to="/processes" className="text-[11px] font-medium text-primary hover:underline">Open →</Link>
+            <div className="flex items-center gap-1">
+              <ExportMenu
+                targetRef={matrixRef}
+                name="process-health-matrix"
+                title="Process Health Matrix"
+                csvRows={matrix.flatMap(({ proc, row }) =>
+                  row.map(c => ({ process: proc.name, family: c.fam.name, violations: c.count, status: c.status }))
+                )}
+              />
+              <Link to="/processes" className="export-skip text-[11px] font-medium text-primary hover:underline">Open →</Link>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
