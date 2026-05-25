@@ -418,13 +418,23 @@ function CommandCenter() {
           ============================================================ */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
         {/* Panel A — Family yield heatmap */}
-        <Card className="lg:col-span-5">
+        <Card ref={heatmapRef as any} className="lg:col-span-5">
           <CardHeader className="pb-2 flex-row items-center justify-between">
             <div>
               <CardTitle className="text-sm font-semibold">Product Family · Yield Heatmap</CardTitle>
               <p className="text-[11px] text-muted-foreground">last 8 weeks · final test pass rate</p>
             </div>
-            <Link to="/yield" className="text-[11px] font-medium text-primary hover:underline">All families →</Link>
+            <div className="flex items-center gap-1">
+              <ExportMenu
+                targetRef={heatmapRef}
+                name="family-yield-heatmap"
+                title="Product Family · Yield Heatmap"
+                csvRows={familyHeatmap.flatMap(({ family, cells }) =>
+                  cells.map(c => ({ family: family.name, week: `W${c.week + 1}`, yield_pct: +(c.y * 100).toFixed(2), lots: c.lots, failed_dies: c.fails }))
+                )}
+              />
+              <Link to="/yield" className="export-skip text-[11px] font-medium text-primary hover:underline">All →</Link>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-1">
