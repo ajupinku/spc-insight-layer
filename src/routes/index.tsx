@@ -563,8 +563,7 @@ function CommandCenter() {
       {/* ============================================================
           SECTION 4 — Alert center
           ============================================================ */}
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
-        <RankedList
+      <div ref={alertsRef} className="grid grid-cols-1 gap-4 lg:grid-cols-12">
           title="Top Failing Parameters"
           link={{ to: "/spc", label: "SPC →" }}
           items={topParams.map(p => ({
